@@ -15,7 +15,7 @@ class InheritsFromBase < Base
 end
 
 describe Base do
-  it "should have other modules' constants" do
+  it "has other modules' constants" do
     InheritsFromBase::Something.should == NormalModule::Something
   end
 
@@ -25,15 +25,15 @@ describe Base do
     end.to raise_error NameError
   end
 
-  it "should have other modules' class methods" do
+  it "has other modules' class methods" do
     InheritsFromBase.a_class_method.should == 6
   end
 
-  it "should have other modules' instance methods" do
+  it "has other modules' instance methods" do
     InheritsFromBase.a_module_method.should == 7
   end
 
-  it "should have other classes' instance methods" do
+  it "has other classes' instance methods" do
     InheritsFromBase.an_instance_method.should == 8
   end
 
@@ -43,7 +43,7 @@ describe Base do
     end.to raise_error NoMethodError
   end
 
-  it "should have other modules' methods as instance methods" do
+  it "has other modules' methods as instance methods" do
     InheritsFromBase.new.a_class_method.should == 6
   end
 
@@ -55,7 +55,7 @@ describe Base do
     InheritsFromBase.all_modules.last.should == Kernel
   end
 
-  its "instance NoMethodErrors should reference the instance" do
+  its "instance NoMethodErrors reference the instance" do
     expect do
       InheritsFromBase.new.not_a_method
     end.to raise_error(NoMethodError, /undefined method `not_a_method' for #<InheritsFromBase/)
