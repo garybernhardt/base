@@ -22,7 +22,7 @@ So I did. It's called Base. Just subclass it and feel free to directly reference
     >> Cantaloupe.new.embiggen
     => "eJzTBwAAMAAw\n"
 
-See that `embiggen` method calling encode64 and deflate methods? Those come from the `Base64` and `Zlib` modules. And the `SEPARATOR` constant is defined in `File`. Base don't give a shit where it's defined! Base just calls what it wants!
+See that `embiggen` method calling encode64 and deflate methods? Those come from the `Base64` and `Zlib` modules. And the `SEPARATOR` constant is defined in `File`. Base don't care where it's defined! Base calls what it wants!
 
 By the way, remember those 530 ActiveRecord methods? That's amateur stuff. Check out Base loaded inside a Rails app:
 
@@ -31,7 +31,7 @@ By the way, remember those 530 ActiveRecord methods? That's amateur stuff. Check
 
 It's so badass that it takes FIVE SECONDS just to answer that question! 
 
-Base is just craaazzy! It's the most fearless class in all of Ruby. Base has no regard for any other object. Base really doesn't give a shit!
+Base is just craaazzy! It's the most fearless class in all of Ruby. Base doesn't afraid of anything!
 
 ## SHOULD I USE THIS IN MY SYSTEM?
 
