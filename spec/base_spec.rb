@@ -4,6 +4,11 @@ module NormalModule
   Something = 5
 
   def self.a_class_method; 6; end
+  def a_module_method; 7; end
+end
+
+class NormalClass
+  def an_instance_method; 8; end
 end
 
 class InheritsFromBase < Base
@@ -22,6 +27,14 @@ describe Base do
 
   it "should have other modules' class methods" do
     InheritsFromBase.a_class_method.should == 6
+  end
+
+  it "should have other modules' instance methods" do
+    InheritsFromBase.a_module_method.should == 7
+  end
+
+  it "should have other classes' instance methods" do
+    InheritsFromBase.an_instance_method.should == 8
   end
 
   it "still throws NoMethodError if the method doesn't exist" do
