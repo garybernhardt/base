@@ -54,5 +54,24 @@ describe Base do
   it "checks Kernel last" do
     InheritsFromBase.all_modules.last.should == Kernel
   end
+
+  its "instance NoMethodErrors should reference the instance" do
+    expect do
+      InheritsFromBase.new.not_a_method
+    end.to raise_error(NoMethodError, /undefined method `not_a_method' for #<InheritsFromBase/)
+  end
+
+  it "lists a lot of class methods" do
+    InheritsFromBase.methods.count.should > 1500
+  end
+
+  it "lists a lot of instance methods" do
+    InheritsFromBase.new.methods.count.should > 1500
+  end
+
+  it "doesn't list duplicate methods" do
+    methods = InheritsFromBase.methods
+    methods.uniq.should == methods
+  end
 end
 

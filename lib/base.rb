@@ -15,19 +15,27 @@ class Base
 
   def self.all_modules
     modules = []
-    ObjectSpace.each_object(Module) do |o|
-      modules << o if should_extract_from?(o)
+    ObjectSpace.each_object(Module) do |mod|
+      modules << mod if should_extract_from?(mod)
     end
     modules << Kernel
     modules
   end
 
-  def self.should_extract_from?(o)
-    return false if (o < Base || o == Base || o.is_a?(Base))
-    return o.is_a?(Module) && o != Kernel
+  def self.should_extract_from?(mod)
+    return false if (mod < Base || mod == Base || mod.is_a?(Base))
+    return mod.is_a?(Module) && mod != Kernel
   end
 
   def self.method_missing name, *args, &block
+    call_method(self, name, args, block)
+  end
+
+  def method_missing name, *args, &block
+    self.class.call_method(self, name, args, block)
+  end
+
+  def self.call_method(object, name, args, block)
     name_string = name.to_s
 
     all_modules.each do |mod|
@@ -37,7 +45,18 @@ class Base
         return call_instance_method(mod, name, args, block)
       end
     end
-    super
+
+    # 1. The world is all that is the case.
+    # 2. We failed to find a method to call.
+    #   2.1. So we need to call method_missing.
+    #     2.1.1. We can't just super it because we're not in method_missing.
+    #       2.1.1.1. We're not in method_missing because there are two of them
+    #                (self and instance) that need to share this code.
+    #       2.1.1.2. We need to call the method that would be called if we said
+    #                "super" in the object's method_missing.
+    #         2.1.1.2.1. Which is its class's superclass's method_missing method
+    #                    object.
+    Object.instance_method(:method_missing).bind(object).call(name, *args, &block)
   end
 
   def self.call_instance_method(mod, name, args, block)
@@ -49,16 +68,12 @@ class Base
     return klass.new.send name, *args, &block
   end
 
-  def method_missing *args, &block
-    self.class.method_missing *args, &block
-  end
-
   def self.methods
-    giant_method_list_including_object(self)
+    (giant_method_list_including_object(self) + super).uniq
   end
 
   def methods
-    self.class.giant_method_list_including_object(self)
+    (self.class.giant_method_list_including_object(self) + super).uniq
   end
 
   # INHERIT ALL THE METHODS!
@@ -69,10 +84,10 @@ class Base
       if m.is_a?(Base) || m < Base || m == Base
         []
       else
-        methods += m.methods
+        methods += m.methods + m.instance_methods
       end
     end
-    methods.uniq
+    methods
   end
 end
 
