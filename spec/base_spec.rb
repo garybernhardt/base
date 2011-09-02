@@ -33,5 +33,9 @@ describe Base do
   it "should have other modules' methods as instance methods" do
     InheritsFromBase.new.a_class_method.should == 6
   end
+
+  it "includes methods from the standard library" do
+    InheritsFromBase.inflate(InheritsFromBase.deflate("x")).should == "x"
+  end
 end
 
