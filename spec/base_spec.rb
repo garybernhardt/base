@@ -37,5 +37,9 @@ describe Base do
   it "includes methods from the standard library" do
     InheritsFromBase.inflate(InheritsFromBase.deflate("x")).should == "x"
   end
+
+  it "checks Kernel last" do
+    InheritsFromBase.all_modules.last.should == Kernel
+  end
 end
 

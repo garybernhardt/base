@@ -15,9 +15,10 @@ class Base
 
   def self.all_modules
     modules = []
-    ObjectSpace.each_object do |o|
-      modules << o if o.is_a? Module
+    ObjectSpace.each_object(Module) do |o|
+      modules << o if o.is_a?(Module) && o != Kernel
     end
+    modules << Kernel
     modules
   end
 
