@@ -1,4 +1,6 @@
 class Base
+  VERSION = "0.0.1"
+
   def initialize *args, &block
     super *args, &block
   end
