@@ -75,11 +75,8 @@ class Base
     methods = []
     all_modules.each_with_index do |m, i|
       # Don't recurse into other Base objects' "methods" method
-      if m.is_a?(Base) || m < Base || m == Base
-        []
-      else
-        methods += m.methods + m.instance_methods
-      end
+      next if m.is_a?(Base) || m < Base || m == Base
+      methods += m.methods + m.instance_methods
     end
     methods
   end
