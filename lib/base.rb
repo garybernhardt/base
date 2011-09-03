@@ -52,7 +52,18 @@ class Base
     else
       klass = Class.new { include mod }
     end
-    return klass.new.send name, *args, &block
+
+    object = self.instantiate_class_regardless_of_argument_count(klass)
+    return object.send name, *args, &block
+  end
+
+  def self.instantiate_class_regardless_of_argument_count(klass)
+    (0..100).each do |arg_count|
+      begin
+        return klass.new(*[nil] * arg_count)
+      rescue ArgumentError
+      end
+    end
   end
 
   def self.methods

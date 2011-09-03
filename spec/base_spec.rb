@@ -11,6 +11,15 @@ class NormalClass
   def an_instance_method; 8; end
 end
 
+class ClassWithTwoConstructorArgs
+  def initialize(x, y)
+  end
+
+  def some_method
+    "constructor args worked!"
+  end
+end
+
 class InheritsFromBase < Base
 end
 
@@ -72,6 +81,10 @@ describe Base do
   it "doesn't list duplicate methods" do
     methods = InheritsFromBase.methods
     methods.uniq.should == methods
+  end
+
+  it "instantiates objects with the correct number of arguments" do
+    InheritsFromBase.new.some_method.should == "constructor args worked!"
   end
 end
 
