@@ -78,11 +78,15 @@ class Base
   def self.giant_method_list_including_object(object)
     methods = []
     all_modules.each do |mod|
-      # Don't recurse into other Base objects' "methods" method
-      next if mod.is_a?(Base) || mod < Base || mod == Base
-      methods.concat(mod.methods).concat(mod.instance_methods)
+      unless module_is_a_base?(mod)
+        methods.concat(mod.methods).concat(mod.instance_methods)
+      end
     end
     methods
+  end
+
+  def self.module_is_a_base?(mod)
+    mod.is_a?(Base) || mod < Base || mod == Base
   end
 end
 
