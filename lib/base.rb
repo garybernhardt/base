@@ -13,9 +13,8 @@ class Base
   end
 
   def self.all_modules
-    modules = []
-    ObjectSpace.each_object(Module) do |mod|
-      modules << mod if should_extract_from?(mod)
+    modules = ObjectSpace.each_object(Module).select do |mod|
+      should_extract_from?(mod)
     end
     modules << Kernel
     modules
