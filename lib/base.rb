@@ -73,7 +73,7 @@ class Base
   # INHERIT ALL THE METHODS!
   def self.giant_method_list_including_object(object)
     methods = []
-    all_modules.each_with_index do |m, i|
+    all_modules.each do |m|
       # Don't recurse into other Base objects' "methods" method
       next if m.is_a?(Base) || m < Base || m == Base
       methods.concat(m.methods).concat(m.instance_methods)
