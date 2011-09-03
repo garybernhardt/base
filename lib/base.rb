@@ -22,11 +22,11 @@ class Base
   end
 
   def self.method_missing name, *args, &block
-    call_method(self, name, args, block)
+    call_method(self, name, args, block) { super }
   end
 
   def method_missing name, *args, &block
-    self.class.call_method(self, name, args, block)
+    self.class.call_method(self, name, args, block) { super }
   end
 
   def self.call_method(object, name, args, block)
@@ -42,15 +42,8 @@ class Base
 
     # 1. The world is all that is the case.
     # 2. We failed to find a method to call.
-    #   2.1. So we need to call method_missing.
-    #     2.1.1. We can't just super it because we're not in method_missing.
-    #       2.1.1.1. We're not in method_missing because there are two of them
-    #                (self and instance) that need to share this code.
-    #       2.1.1.2. We need to call the method that would be called if we said
-    #                "super" in the object's method_missing.
-    #         2.1.1.2.1. Which is its class's superclass's method_missing method
-    #                    object.
-    Object.instance_method(:method_missing).bind(object).call(name, *args, &block)
+    #   2.1. call "super" in the context of the method_missing caller
+    yield
   end
 
   def self.call_instance_method(mod, name, args, block)
