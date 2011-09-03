@@ -53,11 +53,11 @@ class Base
       klass = Class.new { include mod }
     end
 
-    object = self.instantiate_class_regardless_of_argument_count(klass)
+    object = self.instantiate_regardless_of_argument_count(klass)
     return object.send name, *args, &block
   end
 
-  def self.instantiate_class_regardless_of_argument_count(klass)
+  def self.instantiate_regardless_of_argument_count(klass)
     (0..100).each do |arg_count|
       begin
         return klass.new(*[nil] * arg_count)
