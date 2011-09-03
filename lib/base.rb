@@ -76,7 +76,7 @@ class Base
     all_modules.each_with_index do |m, i|
       # Don't recurse into other Base objects' "methods" method
       next if m.is_a?(Base) || m < Base || m == Base
-      methods += m.methods + m.instance_methods
+      methods.concat(m.methods).concat(m.instance_methods)
     end
     methods
   end
