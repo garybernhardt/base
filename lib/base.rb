@@ -40,9 +40,7 @@ class Base
       end
     end
 
-    # 1. The world is all that is the case.
-    # 2. We failed to find a method to call.
-    #   2.1. call "super" in the context of the method_missing caller
+    # call "super" in the context of the method_missing caller
     yield
   end
 
