@@ -33,6 +33,24 @@ It's so badass that it takes *five seconds* just to answer that question!
 
 Base is just craaazzy! It's the most fearless class in all of Ruby. Base doesn't afraid of anything!
 
+## PRAISE FOR BASE
+
+> @garybernhardt @kantrn ... Can't tell if joke or just Ruby.
+
+\- @[shazow](https://twitter.com/#!/shazow/status/109464406739521536)
+
+> @garybernhardt y u troll soooo good? ;-)
+
+\- @[amerine](https://twitter.com/#!/amerine/status/109453913572392960)
+
+> @garybernhardt Imagine all the things you could have done doing not that
+
+\- @[mrb_bk](https://twitter.com/#!/mrb_bk/status/109452972966154240)
+
+> @garybernhardt I hate you.
+
+\- @[jmazzi](https://twitter.com/#!/jmazzi/status/109451655040352256)
+
 ## SHOULD I USE THIS IN MY SYSTEM?
 
 Yes. I am being completely serious. You should.
