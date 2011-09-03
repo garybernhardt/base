@@ -1,24 +1,16 @@
 class Base
   VERSION = "0.0.1"
 
-  def initialize *args, &block
-    super *args, &block
-  end
-
   def self.const_missing name
-    name = name.to_s
     all_modules.each do |mod|
-      mod.constants.each do |constant|
-        return mod.const_get(constant) if constant == name
-      end
+      return mod.const_get(name) if mod.const_defined?(name)
     end
     super
   end
 
   def self.all_modules
-    modules = []
-    ObjectSpace.each_object(Module) do |mod|
-      modules << mod if should_extract_from?(mod)
+    modules = ObjectSpace.each_object(Module).select do |mod|
+      should_extract_from?(mod)
     end
     modules << Kernel
     modules
@@ -30,11 +22,11 @@ class Base
   end
 
   def self.method_missing name, *args, &block
-    call_method(self, name, args, block)
+    call_method(self, name, args, block) { super }
   end
 
   def method_missing name, *args, &block
-    self.class.call_method(self, name, args, block)
+    self.class.call_method(self, name, args, block) { super }
   end
 
   def self.call_method(object, name, args, block)
@@ -50,15 +42,8 @@ class Base
 
     # 1. The world is all that is the case.
     # 2. We failed to find a method to call.
-    #   2.1. So we need to call method_missing.
-    #     2.1.1. We can't just super it because we're not in method_missing.
-    #       2.1.1.1. We're not in method_missing because there are two of them
-    #                (self and instance) that need to share this code.
-    #       2.1.1.2. We need to call the method that would be called if we said
-    #                "super" in the object's method_missing.
-    #         2.1.1.2.1. Which is its class's superclass's method_missing method
-    #                    object.
-    Object.instance_method(:method_missing).bind(object).call(name, *args, &block)
+    #   2.1. call "super" in the context of the method_missing caller
+    yield
   end
 
   def self.call_instance_method(mod, name, args, block)
@@ -81,13 +66,10 @@ class Base
   # INHERIT ALL THE METHODS!
   def self.giant_method_list_including_object(object)
     methods = []
-    all_modules.each_with_index do |m, i|
+    all_modules.each do |mod|
       # Don't recurse into other Base objects' "methods" method
-      if m.is_a?(Base) || m < Base || m == Base
-        []
-      else
-        methods += m.methods + m.instance_methods
-      end
+      next if mod.is_a?(Base) || mod < Base || mod == Base
+      methods.concat(mod.methods).concat(mod.instance_methods)
     end
     methods
   end
