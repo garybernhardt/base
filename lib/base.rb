@@ -1,10 +1,6 @@
 class Base
   VERSION = "0.0.1"
 
-  def initialize *args, &block
-    super *args, &block
-  end
-
   def self.const_missing name
     all_modules.each do |mod|
       return mod.const_get(name) if mod.const_defined?(name)
