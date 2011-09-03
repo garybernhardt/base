@@ -6,11 +6,8 @@ class Base
   end
 
   def self.const_missing name
-    name = name.to_s
     all_modules.each do |mod|
-      mod.constants.each do |constant|
-        return mod.const_get(constant) if constant == name
-      end
+      return mod.const_get(name) if mod.const_defined?(name)
     end
     super
   end
