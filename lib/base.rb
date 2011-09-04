@@ -15,7 +15,7 @@ class Base
           unless ge =~ /\A\./
             gn = ge[0..ge.rindex('-')-1]
             unless blacklist.index(gn)
-              debugger if gn =~ /adapter/
+              #puts "loading gem #{gn}"
               gem gn
               require gn
             end
