@@ -17,7 +17,7 @@ class Base
   end
 
   def self.should_extract_from?(mod)
-    return false if (mod < Base || mod == Base || mod.is_a?(Base))
+    return false if module_is_a_base?(mod)
     return mod.is_a?(Module) && mod != Kernel
   end
 
