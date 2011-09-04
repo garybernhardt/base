@@ -7,18 +7,21 @@ class Base
       require 'rubygems' unless defined?(Gem)
     rescue LoadError => e
     end
-    blacklist = %w(eventmachine)
+    blacklist = %w(eventmachine yajl-ruby
+                   dm-sqlite-adapter dm-do-adapter)
     if defined?(Gem)
       Dir.open("#{Gem.dir}/gems").entries.each { |ge|
         begin
           unless ge =~ /\A\./
             gn = ge[0..ge.rindex('-')-1]
-            unless blacklist.include?(gn)
+            unless blacklist.index(gn)
+              debugger if gn =~ /adapter/
               gem gn
               require gn
             end
           end
         rescue LoadError => e
+        rescue => e
         end
       }
     end
