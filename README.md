@@ -33,6 +33,10 @@ It's so badass that it takes *five seconds* just to answer that question!
 
 Base is just craaazzy! It's the most fearless class in all of Ruby. Base doesn't afraid of anything!
 
+## LICENSE:
+
+Distributed under the union of the terms specified by all current OSI-approved licenses. In the event of a conflict, a die is to be rolled.
+
 ## PRAISE FOR BASE
 
 > @garybernhardt @kantrn ... Can't tell if joke or just Ruby.
