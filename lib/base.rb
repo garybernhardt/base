@@ -30,8 +30,8 @@ class Base
   end
 
   def self.call_method(object, name, args, block)
-    name_string = name.to_s
-
+    name_string = RUBY_VERSION.split(".")[0..1].join(".").to_f >= 1.9 ? name : name.to_s
+    
     all_modules.each do |mod|
       if mod.respond_to?(name)
         return mod.send name, *args, &block

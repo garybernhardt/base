@@ -1,4 +1,4 @@
-require 'lib/base'
+require File.expand_path('lib/base')
 
 module NormalModule
   Something = 5
