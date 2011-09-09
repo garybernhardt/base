@@ -30,18 +30,21 @@ class Base
   end
 
   def self.call_method(object, name, args, block)
-    name_string = RUBY_VERSION.split(".")[0..1].join(".").to_f >= 1.9 ? name : name.to_s
-    
     all_modules.each do |mod|
       if mod.respond_to?(name)
         return mod.send name, *args, &block
-      elsif mod.instance_methods.include?(name_string)
+      elsif module_has_instance_method?(mod, name)
         return call_instance_method(mod, name, args, block)
       end
     end
 
     # call "super" in the context of the method_missing caller
     yield
+  end
+
+  def self.module_has_instance_method?(mod, method_name)
+    (mod.instance_methods.include?(method_name) ||
+     mod.instance_methods.include?(method_name.to_s))
   end
 
   def self.call_instance_method(mod, name, args, block)
