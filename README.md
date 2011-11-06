@@ -7,7 +7,7 @@
 People love Base classes! They have tons of methods waiting to be used. Just check out `ActiveRecord::Base`'s method list:
 
     >> ActiveRecord::Base.methods.length
-    => 530
+    => 604
 
 But why stop there? Why not have even more methods? In fact, let's put *every method* on one Base class!
 
