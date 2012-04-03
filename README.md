@@ -29,7 +29,7 @@ By the way, remember those 572 ActiveRecord methods? That's amateur stuff. Check
     >> Base.new.methods.count
     => 5794
 
-It's so badass that it takes *five seconds* just to answer that question! 
+It's so badass that it takes *five seconds* just to answer that question!
 
 Base is just craaazzy! It's the most fearless class in all of Ruby. Base doesn't afraid of anything!
 
