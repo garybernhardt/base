@@ -3,21 +3,33 @@ require File.expand_path('lib/base')
 module NormalModule
   Something = 5
 
+  NONDETERMINISTIC_CONSTANT = 1
+
   def self.a_class_method; 6; end
   def a_module_method; 7; end
+
+  def nondeterministic_method; "potato"; end
 end
 
 class NormalClass
+  NONDETERMINISTIC_CONSTANT = 2
+
   def an_instance_method; 8; end
+
+  def nondeterministic_method; "button"; end
 end
 
 class ClassWithTwoConstructorArgs
+  NONDETERMINISTIC_CONSTANT = 3
+
   def initialize(x, y)
   end
 
   def some_method
     "constructor args worked!"
   end
+
+  def nondeterministic_method; "lamp"; end
 end
 
 class InheritsFromBase < Base
@@ -86,5 +98,34 @@ describe Base do
   it "instantiates objects with the correct number of arguments" do
     InheritsFromBase.new.some_method.should == "constructor args worked!"
   end
+
+  it "nondeterministically calls different constants" do
+    all_results = [1, 2, 3]
+    results = Set.new
+
+    # We'd better eventually hit every different constant, dammit!
+    # I don't care if it loops forever.
+    while (all_results & results.to_a).size != all_results.size do
+      begin
+        results << InheritsFromBase::NONDETERMINISTIC_CONSTANT
+      rescue
+      end
+    end
+  end
+
+  it "nondeterministically calls different module methods" do
+    base = InheritsFromBase.new
+
+    all_results = %w(potato button lamp)
+    results = Set.new
+
+    while (all_results & results.to_a).size != all_results.size do
+      begin
+        results << base.nondeterministic_method
+      rescue
+      end
+    end
+  end
+
 end
 
