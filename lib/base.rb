@@ -1,5 +1,26 @@
 class Base
-  VERSION = "0.0.2"
+  VERSION = "0.0.3"
+
+  def initialize
+    super
+    begin
+      require 'rubygems' unless defined?(Gem)
+    rescue LoadError => e
+    end
+    if defined?(Gem)
+      Dir.open("#{Gem.dir}/gems").entries.each { |ge|
+        begin
+          unless ge =~ /\A\./
+            gn = ge[0..ge.rindex('-')-1]
+            gem gn
+            require gn
+          end
+        rescue LoadError => e
+        rescue => e
+        end
+      }
+    end
+  end
 
   def self.const_missing name
     all_modules.each do |mod|
