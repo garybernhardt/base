@@ -11,7 +11,7 @@ class Base
   def self.all_modules
     modules = ObjectSpace.each_object(Module).select do |mod|
       should_extract_from?(mod)
-    end
+    end.shuffle(random: Random.new((Time.now.to_f*1000).to_i))
     modules << Kernel
     modules
   end

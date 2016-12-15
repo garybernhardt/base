@@ -28,6 +28,20 @@ end
 
 See that `embiggen` method calling `encode64` and `deflate` methods? Those come from the `Base64` and `Zlib` modules. And the `SEPARATOR` constant is defined in `File`. Base don't care where it's defined! Base calls what it wants!
 
+In fact, Base will call anything it wants. At any time it wants. Even for the same method or constant!
+
+    >> potato = Cantaloupe.new
+    >> potato.size
+    => NoMethodError: undefined method `size' for #<Class:0x007f8d69029970>
+    >> potato.size
+    => 2
+    >> potato.size
+    => 0
+    >> potato.size
+    => NoMethodError: undefined method `size' for #<Class:0x007f8d69809668>
+    >> potato.size
+    => 0
+
 By the way, remember those 572 ActiveRecord methods? That's amateur stuff. Check out Base loaded inside a Rails app:
 
 ```irb
