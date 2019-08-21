@@ -1,7 +1,7 @@
 class Base
   VERSION = "0.0.2"
 
-  def self.const_missing name
+  def self.const_missing(name)
     all_modules.each do |mod|
       return mod.const_get(name) if mod.const_defined?(name)
     end
@@ -21,18 +21,18 @@ class Base
     return mod.is_a?(Module) && mod != Kernel
   end
 
-  def self.method_missing name, *args, &block
+  def self.method_missing(name, *args, &block)
     call_method(self, name, args, block) { super }
   end
 
-  def method_missing name, *args, &block
+  def method_missing(name, *args, &block)
     self.class.call_method(self, name, args, block) { super }
   end
 
   def self.call_method(object, name, args, block)
     all_modules.each do |mod|
       if mod.respond_to?(name)
-        return mod.send name, *args, &block
+        return mod.send(name, *args, &block)
       elsif module_has_instance_method?(mod, name)
         return call_instance_method(mod, name, args, block)
       end
@@ -55,7 +55,7 @@ class Base
     end
 
     object = self.instantiate_regardless_of_argument_count(klass)
-    return object.send name, *args, &block
+    return object.send(name, *args, &block)
   end
 
   def self.instantiate_regardless_of_argument_count(klass)
